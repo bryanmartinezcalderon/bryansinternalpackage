@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import pandas as  pd
 import numpy as np
-from progress.bar import Bar
+import progress
 
-bar = Bar('Processing', max=20)
+bar = progress.FillingSquaresBar('Processing', max=20)
 for i in range(20):
-    s=pd.array(np.random.randn(100000))
-    print(s)
-    np.exp(s)
+    s=pd.array(np.random.randn(10000))
+    for item in s:
+        np.exp(item)
     bar.next()
 bar.finish()
