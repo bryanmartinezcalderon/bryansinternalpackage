@@ -7,12 +7,12 @@ import geopandas as gpd
 
 def coordinatetoStr(arg):
     output = 0
-    arg.lstrip()
+    arg = arg.strip()
+    arg2 = arg.split('.')
     if 'N' in arg or 'E' in arg:
-        output = int(arg[:3])
+        output = int(arg2[0])
     elif 'S' in arg or 'W' in arg:
-        print(arg)
-        output = int(arg[:1])*-1
+        output = int(arg2[0])*-1
     return output
 
 
@@ -34,8 +34,13 @@ hurrDetails = hurrDataframe.loc[~hurrDataframe[0].str.contains('A')]
 
 coordinates = hurrDetails.drop(columns=list(range(0, 4)))
 coordinates = coordinates.drop(columns=list(range(6, 21)))
+coordinates.head()
+plotCoord = coordinates.applymap(coordinatetoStr)
+plotCoord.columns = ['y', 'x']
+plotCoord.head()
 
-coordinates.applymap(coordinatetoStr)
 
-mapObject.plot()
-.plot()
+ax = mapObject.plot()
+fig = plotCoord.plot(x='x', y='y', ax=ax, color='r', style='*', figsize=(20, 16)).get_figure()
+
+fig.savefig('test.pdf')
